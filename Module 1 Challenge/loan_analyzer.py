@@ -78,9 +78,11 @@ loan = {
 # YOUR CODE HERE!
 print()
 print("----- Analyse Loan Data -----")
+loan_price = loan.get("loan_price")
 future_value = loan.get("future_value")
 remaining_months = loan.get("remaining_months")
 print()
+print(f"Loan Price is ${loan_price}")
 print(f"Future Value is ${future_value}")
 print(f"Remaining Months is {remaining_months}")
 
@@ -91,7 +93,7 @@ print(f"Remaining Months is {remaining_months}")
 
 # YOUR CODE HERE!
 annual_discount_rate = 0.2
-present_value = future_value / (1 + annual_discount_rate/12) ** remaining_months
+present_value = future_value / (1 + annual_discount_rate/12)**remaining_months
 print(f"Present Value of the Loan is ${present_value}")
 print()
 
@@ -100,7 +102,6 @@ print()
 #    If the present value of the loan is greater than or equal to the cost, then print a message that says the loan is worth at least the cost to buy it.
 #    Else, the present value of the loan is less than the loan cost, then print a message that says that the loan is too expensive and not worth the price.
 # YOUR CODE HERE!
-loan_price = loan.get("loan_price")
 if present_value >= loan_price:
     print("The loan is worth at least the cost to buy it.")
 else:
@@ -145,7 +146,7 @@ remaining_months = new_loan.get("remaining_months")
 annual_discount_rate = 0.2
 
 present_value = calculate_present_value(future_value, remaining_months, annual_discount_rate)
-
+print()
 print("----- Financial Calculations using Functions -----")
 print()
 print(f"The present value of the loan is: ${present_value}")
@@ -194,12 +195,23 @@ loans = [
 
 # @TODO: Create an empty list called `inexpensive_loans`
 # YOUR CODE HERE!
+inexpensive_loans = []
 
 # @TODO: Loop through all the loans and append any that cost $500 or less to the `inexpensive_loans` list
 # YOUR CODE HERE!
+for this_loan in loans:
+    if this_loan["loan_price"] <= 500:
+        # print(this_loan.get("loan_price"))
+        inexpensive_loans.append(this_loan)
+
 
 # @TODO: Print the `inexpensive_loans` list
 # YOUR CODE HERE!
+print()
+print("----- Conditionally filter lists of loans -----")
+print()
+print("These are inexpensive loans: ", *inexpensive_loans, sep = "\n")
+print()
 
 
 """Part 5: Save the results.
@@ -225,3 +237,17 @@ output_path = Path("inexpensive_loans.csv")
 # @TODO: Use the csv library and `csv.writer` to write the header row
 # and each row of `loan.values()` from the `inexpensive_loans` list.
 # YOUR CODE HERE!
+print("Writing the data to a CSV file...")
+
+# Open the output CSV file path using `with open`
+with open(output_path, "w") as csvfile:
+    # Create a csvwriter
+    csvwriter = csv.writer(csvfile, delimiter=",")
+
+    # Write the header to the CSV file
+    csvwriter.writerow(header)
+
+    # Write the values of each dictionary inside of `inexpensive_loans`
+    # as a row in the CSV file.
+    for loan in inexpensive_loans:
+        csvwriter.writerow(loan.values())
